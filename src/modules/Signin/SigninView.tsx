@@ -11,48 +11,38 @@ import {
   Platform,
 } from 'react-native';
 import {StackNavigatorProp} from '../../router/StackNavigator';
-import {ConnectUserAction} from './types/auth';
+import {RegisterUserAction} from './types/register';
 import {
   COLOR_WHITE,
   COLOR_GREY,
   COLOR_YELLOW,
 } from '../../../static/misc/colors';
-import {REGEX_EMAIL, REGEX_PASSWORD} from '../../../static/misc/constants';
+import {REGEX_EMAIL} from '../../../static/misc/constants';
 
-interface LoginProps {
+interface SigninProps {
   navigation: StackNavigatorProp;
-  connectUser: () => ConnectUserAction;
+  registerUser: () => RegisterUserAction;
 }
 
-interface LoginState {
+interface SigninState {
   login: string;
-  password: string;
   userCanTry: boolean;
 }
 
-export class LoginView extends React.Component<LoginProps, LoginState> {
-  constructor(props: LoginProps) {
+export class SigninView extends React.Component<SigninProps, SigninState> {
+  constructor(props: SigninProps) {
     super(props);
     this.state = {
       login: '',
-      password: '',
       userCanTry: false,
     };
   }
 
   componentDidUpdate() {
-    const {login, password, userCanTry} = this.state;
-    if (
-      REGEX_EMAIL.test(login) &&
-      REGEX_PASSWORD.test(password) &&
-      !userCanTry
-    ) {
+    const {login, userCanTry} = this.state;
+    if (REGEX_EMAIL.test(login) && !userCanTry) {
       this.userCanTry(true);
-    } else if (
-      !REGEX_EMAIL.test(login) &&
-      !REGEX_PASSWORD.test(password) &&
-      userCanTry
-    ) {
+    } else if (!REGEX_EMAIL.test(login) && userCanTry) {
       this.userCanTry(false);
     }
   }
@@ -63,9 +53,9 @@ export class LoginView extends React.Component<LoginProps, LoginState> {
     this.setState({[name]: value} as object);
 
   onLogin = () => {
-    const {connectUser} = this.props;
-    connectUser();
-    this.goTo('MainFlow')();
+    const {registerUser} = this.props;
+    registerUser();
+    this.goTo('Login')();
   };
 
   goTo = (route: any) => () => {
@@ -74,7 +64,7 @@ export class LoginView extends React.Component<LoginProps, LoginState> {
   };
 
   render() {
-    const {userCanTry, login, password} = this.state;
+    const {userCanTry} = this.state;
     return (
       <SafeAreaView style={styles.appContainer}>
         <KeyboardAvoidingView
@@ -87,27 +77,19 @@ export class LoginView extends React.Component<LoginProps, LoginState> {
           <View style={styles.form}>
             <TextInput
               placeholder="Identifiant"
-              value={login}
               autoCapitalize="none"
               keyboardType="email-address"
               style={styles.input}
               onChangeText={this.handleChange('login')}
             />
-            <TextInput
-              placeholder="Mot de passe"
-              value={password}
-              style={styles.input}
-              secureTextEntry
-              onChangeText={this.handleChange('password')}
-            />
             <TouchableOpacity
               style={[styles.button, !userCanTry ? styles.isDisabled : null]}
               onPress={this.onLogin}
               disabled={!userCanTry}>
-              <Text style={styles.buttonText}>Connexion</Text>
+              <Text style={styles.buttonText}>S'inscrire</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.link} onPress={this.goTo('Signin')}>
-              <Text>Créer votre compte</Text>
+            <TouchableOpacity style={styles.link} onPress={this.goTo('Login')}>
+              <Text>Retour</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>

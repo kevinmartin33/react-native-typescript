@@ -1,10 +1,10 @@
 import {bindActionCreators, Dispatch} from 'redux';
 import {connect} from 'react-redux';
 
-import {connectUser} from '../actions/auth';
+import {registerUser} from '../actions/register';
 
 import {RootState} from '../../../store/rootreducer';
-import {LoginView} from '../LoginView';
+import {SigninView} from '../SigninView';
 
 const mapStateToProps = (_state: RootState) => {
   return {};
@@ -14,16 +14,16 @@ const mapdispatchToProps = (dispatch: Dispatch) => {
   return {
     ...bindActionCreators(
       {
-        connectUser,
+        registerUser,
       },
       dispatch,
     ),
   };
 };
 
-const LoginViewContainer = connect(
+const SigninViewContainer = connect(
   mapStateToProps,
   mapdispatchToProps,
-)(LoginView);
+)(SigninView);
 
-export default LoginViewContainer;
+export default SigninViewContainer;

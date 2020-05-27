@@ -1,36 +1,30 @@
-import {
-  createStore,
-  applyMiddleware,
-  CombinedState
-} from "redux";
+import {createStore, applyMiddleware, CombinedState} from 'redux';
 
-import _ from 'lodash'
+import _ from 'lodash';
 
-import axiosMiddleware from 'redux-axios-middleware'
-import promiseMiddleware from 'redux-promise-middleware'
-import thunk from 'redux-thunk'
+import axiosMiddleware from 'redux-axios-middleware';
+import promiseMiddleware from 'redux-promise-middleware';
+import thunk from 'redux-thunk';
 
-import reducers from './rootreducer'
-import http from '../services/axios'
+import reducers from './rootreducer';
+import http from '../services/axios';
 
 import {
   createAsyncStorageMiddleware,
-  getCachedState
-} from './middlewares/AsyncStorageMiddleware'
+  getCachedState,
+} from './middlewares/AsyncStorageMiddleware';
 
-const blacklistedKeys: (string | number | symbol)[] = [
-  'auth'
-]
+const blacklistedKeys: (string | number | symbol)[] = ['auth'];
 
 export default async function(): Promise<CombinedState<any>> {
-  const cachedState = _.omit(await getCachedState(), blacklistedKeys)
+  const cachedState = _.omit(await getCachedState(), blacklistedKeys);
 
   const createStoreWithMiddleware = applyMiddleware(
     createAsyncStorageMiddleware(blacklistedKeys),
     axiosMiddleware(http),
     promiseMiddleware(),
-    thunk
+    thunk,
   )(createStore);
 
-  return createStoreWithMiddleware(reducers, cachedState)
+  return createStoreWithMiddleware(reducers, cachedState);
 }
