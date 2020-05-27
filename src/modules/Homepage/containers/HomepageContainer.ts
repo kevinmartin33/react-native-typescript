@@ -1,32 +1,33 @@
-import {
-  bindActionCreators,
-  Dispatch
-} from 'redux'
-import { connect } from 'react-redux'
+import {bindActionCreators, Dispatch} from 'redux';
+import {connect} from 'react-redux';
 
-import {
-  HomepageView,
-  HomepageProps
-} from '../HomepageView'
-import { RootState } from '../../../store/rootreducer'
+import {getDatas} from '../actions/datas';
 
+import {HomepageView} from '../HomepageView';
+import {RootState} from '../../../store/rootreducer';
 
-const mapStateToProps = (state: RootState, props: HomepageProps) => {
+const mapStateToProps = (state: RootState) => {
   return {
-    isConnected: state.auth.isConnected
-  }
-}
+    datas: state.homepage.datas,
+    isLoaded: state.homepage.isLoaded,
+    isConnected: state.auth.isConnected,
+  };
+};
 
-const mapdispatchToProps = (dispatch: Dispatch, props: HomepageProps) => {
+const mapdispatchToProps = (dispatch: Dispatch) => {
   return {
-    ...bindActionCreators({
-    }, dispatch)
-  }
-}
+    ...bindActionCreators(
+      {
+        getDatas,
+      },
+      dispatch,
+    ),
+  };
+};
 
 const HomepageContainer = connect(
   mapStateToProps,
-  mapdispatchToProps
-)(HomepageView)
+  mapdispatchToProps,
+)(HomepageView);
 
-export default HomepageContainer
+export default HomepageContainer;

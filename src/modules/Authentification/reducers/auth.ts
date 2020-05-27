@@ -4,39 +4,39 @@ import {
   CONNECTUSER,
   LOGIN,
   LOGIN_FAIL,
-  LOGIN_SUCCESS
-} from "../types/auth"
+  LOGIN_SUCCESS,
+} from '../types/auth';
 
 const initialState: AuthState = {
-  isConnected: false
-}
+  isConnected: false,
+};
 
 export default function reducer(
   state = initialState,
-  action: AuthActionTypes
+  action: AuthActionTypes,
 ): AuthState {
   switch (action.type) {
     case CONNECTUSER:
       return {
         ...state,
-        isConnected: true
-      }
+        isConnected: true,
+      };
 
     // Axios call reducers
     case LOGIN:
       return {
-        ...state
-      }
+        ...state,
+      };
     case LOGIN_FAIL:
       return {
-        ...state
-      }
+        ...state,
+      };
     case LOGIN_SUCCESS:
       return {
-        ...state
-      }
+        ...state,
+      };
 
     default:
-      return state
+      return state;
   }
 }
